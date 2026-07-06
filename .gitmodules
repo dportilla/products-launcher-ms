@@ -1,3 +1,6 @@
 [submodule "client-gateway-ms"]
 	path = client-gateway-ms
 	url = https://github.com/dportilla/client-gateway-ms.git
+[submodule "products-ms"]
+	path = products-ms
+	url = https://github.com/dportilla/products-ms.git
