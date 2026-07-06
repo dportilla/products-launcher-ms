@@ -1,5 +1,7 @@
 # Products Launcher MS
 
+> **Important:** This project is still under active development.
+
 A **NestJS** microservices backend orchestrated with Docker Compose and connected via **NATS** message broker. This repository is a monorepo-launcher that composes multiple independent microservice repositories through Git submodules.
 
 ## Architecture
