@@ -21,7 +21,10 @@ services:
 
   products-ms:
     container_name: products-ms
-    build: ./products-ms
+    build:
+      context: ./products-ms
+      args:
+        - DATABASE_URL=file:./dev.db
     ports:
       - '3001:3001'
     volumes:
