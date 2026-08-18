@@ -26,7 +26,7 @@ git submodule update --init --recursive
 6. Para actualizar las referencias de los sub-módulos
 
 ```
-git submodule update --remote
+❯ git submodule update --remote --recursive
 ```
 
 ## Importante

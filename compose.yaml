@@ -8,16 +8,18 @@ services:
       - '6222:6222'
 
   client-gateway:
-    container_name: client-gateway
+    container_name: client-gateway-ms
     build: ./client-gateway-ms
     ports:
       - '${CLIENT_GATEWAY_PORT}:3000'
     volumes:
-      - ./client-gateway:/src:/usr/src/app/src
+      - ./client-gateway-ms:/src:/usr/src/app/src
     command: ['pnpm', 'start:dev']
     environment:
       - PORT=3000
       - NATS_SERVERS=nats://nats-server:4222
+
+  # ========= PRODUCTS MICROSERVICE ==========
 
   products-ms:
     container_name: products-ms
@@ -35,6 +37,8 @@ services:
       - NATS_SERVERS=nats://nats-server:4222
       - DATABASE_URL=file:./dev.db
 
+  # ========= ORDERS MICROSERVICE ==========
+
   orders-ms:
     container_name: orders-ms
     depends_on:
@@ -50,6 +54,8 @@ services:
       - NATS_SERVERS=nats://nats-server:4222
       - DATABASE_URL=postgres://postgres:postgres@orders-db:5432/orders_db?schema=public
 
+  # ========== ORDERS DATABASE ==========
+
   orders-db:
     container_name: orders-db
     image: postgres:17.9
@@ -62,3 +68,21 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: orders_db
+
+  # ========== PAYMENTS MICROSERVICE ==========
+
+  payments-ms:
+    container_name: payments-ms
+    build: ./payments-ms
+    ports:
+      - '3003:3003'
+    volumes:
+      - ./payments-ms:/src:/usr/src/app/src
+    command: ['pnpm', 'start:dev']
+    environment:
+      - PORT=3003
+      - NATS_SERVERS=nats://nats-server:4222
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_ENDPOINT_SECRET=${STRIPE_ENDPOINT_SECRET}
+      - STRIPE_SUCCESS_URL=${STRIPE_SUCCESS_URL}
+      - STRIPE_CANCEL_URL=${STRIPE_CANCEL_URL}
